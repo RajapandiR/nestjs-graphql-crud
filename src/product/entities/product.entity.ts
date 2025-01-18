@@ -3,7 +3,7 @@ import { Document } from 'mongoose';
 import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
-@Schema()
+@Schema({ timestamps: true, versionKey: false })
 export class Product extends Document {
   @Field()
   id: string;
@@ -18,6 +18,12 @@ export class Product extends Document {
   @Field()
   @Prop({})
   price: number;
+
+  @Field(() => Date)
+  createdAt: Date;
+
+  @Field(() => Date)
+  updatedAt: Date;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);
