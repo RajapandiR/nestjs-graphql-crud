@@ -193,6 +193,7 @@ http://localhost:3000/graphql
 #### Request body
 ```
 query{
+  count
   getProducts{
     id
     name
@@ -212,10 +213,16 @@ query{
 ```
 {
   "data": {
+    "count": 3,
     "getProducts": [
       {
-        "id": "678a6a875c8d79cbfece5897",
+        "id": "678b3a94d54b0007b207c8dc",
         "name": "Testing",
+        "price": 200
+      },
+      {
+        "id": "678b2cd23950e3690b91585c",
+        "name": "Test",
         "price": 100
       },
       {

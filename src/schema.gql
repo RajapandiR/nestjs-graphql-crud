@@ -21,8 +21,9 @@ type Product {
 
 type Query {
   users: [User!]!
-  getProducts: [Product!]!
+  getProducts(page: Int! = 0, limit: Int! = 25): [Product!]!
   getProduct(id: String!): Product
+  count: Float!
 }
 
 type Mutation {

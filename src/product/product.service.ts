@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
+import { PaginationArgs } from './dto/pagination.dto';
 
 @Injectable()
 export class ProductService {
@@ -15,8 +16,24 @@ export class ProductService {
     return this.productModel.create(body);
   }
 
-  async getProducts(): Promise<Product[]> {
-    return this.productModel.find();
+  async getProducts(
+    args: PaginationArgs = { page: 0, limit: 10 },
+  ): Promise<Product[]> {
+    let perPage = args.page;
+    if (Number(perPage) === 0) {
+      perPage = 0;
+    } else {
+      perPage = Number(perPage) - 1;
+    }
+    return this.productModel.find(
+      {},
+      {},
+      {
+        sort: { _id: -1 },
+        limit: args.limit,
+        skip: perPage * args.limit,
+      },
+    );
   }
 
   async getProductById(id: string): Promise<Product> {
@@ -34,5 +51,9 @@ export class ProductService {
     await this.getProductById(id);
     const result = await this.productModel.findByIdAndDelete(id);
     return result ? true : false;
+  }
+
+  async getCount(): Promise<number> {
+    return await this.productModel.countDocuments();
   }
 }
